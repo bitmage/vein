@@ -67,7 +67,7 @@ client = (opt) ->
             pair = cookie.split "="
             continue unless pair[0] and pair[1]
             out[pair[0].trim()] = pair[1].trim()
-            return out
+          return out
         set = (key, val, expires) ->
           sExpires = ""
           sExpires = "; max-age=#{expires}" if typeof expires is 'number'
