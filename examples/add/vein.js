@@ -2767,8 +2767,8 @@ Transport.prototype.onClose = function () {
                 continue;
               }
               out[pair[0].trim()] = pair[1].trim();
-              return out;
             }
+            return out;
           };
           set = function(key, val, expires) {
             var sExpires;
