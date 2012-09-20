@@ -70,6 +70,18 @@ describe 'Vein', ->
           num.should.equal 30
           done()
 
+    it 'should transmit cookies', (done) ->
+      serv = getServer()
+      serv.add 'test', (res) ->
+        res.cookie 'result', 'oi'
+        res.reply 'goyta'
+
+      client = getClient serv
+      client.ready (services) ->
+        client.test ->
+          client.cookie('result').should.equal 'oi'
+          done()
+
   describe 'middleware', ->
     it 'should add', (done) ->
       serv = getServer()
