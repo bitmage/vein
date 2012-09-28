@@ -103,6 +103,17 @@ describe 'Vein', ->
           called.should.equal true
           done()
 
+    it 'should stop execution and give an error on failed middleware', (done) ->
+      serv = getServer()
+      serv.use (req, res, next) -> next "This is an error"
+      serv.add 'dontRunMe', (res) -> assert false
+
+      client = getClient serv
+      client.ready (services) ->
+        client.dontRunMe (err) ->
+          err.should.eql "This is an error"
+          done()
+
 describe 'client', ->
   it 'should work on multiple clients', (done) ->
     serv = getServer()

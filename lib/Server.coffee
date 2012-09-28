@@ -52,8 +52,11 @@ module.exports = (opt) ->
     message: (socket, msg) ->
       try
         res = @getResponder socket, msg
-        @runStack msg, res, =>
-          @services[msg.service] res, msg.args...
+        @runStack msg, res, (err) =>
+          if err
+            res.reply err
+          else
+            @services[msg.service] res, msg.args...
       catch err
         @error socket, err
 
