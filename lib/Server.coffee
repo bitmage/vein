@@ -58,7 +58,13 @@ module.exports = (opt) ->
           else
             @services[msg.service] res, msg.args...
       catch err
-        @error socket, err
+        @error socket, err, msg
+
+    error: (socket, err, msg) ->
+      if msg
+        @getResponder(socket, msg)(err.toString())
+      else
+        console.log 'received error:', err
 
     getResponder: (socket, msg) ->
       responder = (args...) ->

@@ -9,8 +9,8 @@ getServer = ->
   Vein.createServer
     server: http.createServer().listen randomPort()
 
-getClient = (server) -> 
-  Vein.createClient 
+getClient = (server) ->
+  Vein.createClient
     host: server.server.httpServer.address().address
     port: server.server.httpServer.address().port
     resource: server.options.resource
@@ -42,7 +42,7 @@ describe 'Vein', ->
 
     it 'should call', (done) ->
       serv = getServer()
-      serv.add 'test', (res, numOne, numTwo) -> 
+      serv.add 'test', (res, numOne, numTwo) ->
         numOne.should.equal 5
         numTwo.should.equal 6
         res.reply numOne * numTwo
@@ -57,7 +57,7 @@ describe 'Vein', ->
 
     it 'should call as fn', (done) ->
       serv = getServer()
-      serv.add 'test', (res, numOne, numTwo) -> 
+      serv.add 'test', (res, numOne, numTwo) ->
         numOne.should.equal 5
         numTwo.should.equal 6
         res numOne * numTwo
@@ -68,6 +68,17 @@ describe 'Vein', ->
         services.should.eql ['test']
         client.test 5, 6, (num) ->
           num.should.equal 30
+          done()
+
+    it 'should handle errors', (done) ->
+      serv = getServer()
+      serv.add 'test', (res, numOne, numTwo) ->
+        throw new Error 'something bad happened'
+
+      client = getClient serv
+      client.ready ->
+        client.test (err) ->
+          err.should.eql 'Error: something bad happened'
           done()
 
     it 'should transmit cookies', (done) ->
