@@ -78,7 +78,7 @@ describe 'Vein', ->
       client = getClient serv
       client.ready ->
         client.test (err) ->
-          err.should.eql 'Error: something bad happened'
+          err.error.should.eql 'something bad happened'
           done()
 
     it 'should transmit cookies', (done) ->
@@ -122,7 +122,7 @@ describe 'Vein', ->
       client = getClient serv
       client.ready (services) ->
         client.dontRunMe (err) ->
-          err.should.eql "This is an error"
+          err.error.should.eql "This is an error"
           done()
 
 describe 'client', ->

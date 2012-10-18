@@ -54,7 +54,7 @@ module.exports = (opt) ->
         res = @getResponder socket, msg
         @runStack msg, res, (err) =>
           if err
-            res.reply err
+            res.reply {service: msg.service, error: (err?.message or err), stack: err?.stack}
           else
             @services[msg.service] res, msg.args...
       catch err
@@ -62,7 +62,7 @@ module.exports = (opt) ->
 
     error: (socket, err, msg) ->
       if msg
-        @getResponder(socket, msg)(err.toString())
+        @getResponder(socket, msg)({service: msg.service, error: (err?.message or err), stack: err?.stack})
       else
         console.log 'received error:', err
 
