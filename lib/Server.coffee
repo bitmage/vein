@@ -77,8 +77,8 @@ module.exports = (opt) ->
         return @
 
       responder.cookie = (key, val) ->
-        return msg.cookies unless key or val
-        if key and not val
+        return msg.cookies unless key
+        if key and val is undefined
           return msg.cookies[key]
         else
           msg.cookies[key] = val
